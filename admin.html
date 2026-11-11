@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTUNHS BookLoop - 後台管理者與開發端</title>
+    <style>
+        :root {
+            --admin-primary: #2c5282;
+            --admin-accent: #319795;
+            --bg-color: #edf2f7;
+            --text-color: #2d3748;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h1 {
+            color: var(--admin-primary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .back-btn {
+            background: #cbd5e0;
+            color: #2d3748;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .back-btn:hover {
+            background: #a0aec0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--admin-accent);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: var(--admin-primary);
+            font-size: 1.1rem;
+        }
+        .card p {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--admin-accent);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .btn:hover {
+            background: #285e61;
+        }
+        .table-preview {
+            margin-top: 30px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .table-preview h3 {
+            margin-top: 0;
+            color: var(--admin-primary);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f7fafc;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h1>⚙️ NTUNHS BookLoop - 後台管理與開發端</h1>
+        <a href="index.html" class="back-btn">⬅️ 返回前台首頁</a>
+    </div>
+
+    <p style="color: #718096; margin-bottom: 25px;">本介面供系統管理者與開發人員進行全站審核、安全性控制與資料庫維護。</p>
+
+    <div class="grid">
+        <!-- 1. 安全管理 -->
+        <div class="card">
+            <h3>🛡️ 安全管理</h3>
+            <p>使用者名單檢視、帳號停權與權限層級控管。</p>
+            <a href="#users" class="btn" onclick="alert('進入後台：使用者名單與權限檢視畫面')">檢視名單</a>
+        </div>
+
+        <!-- 2. 書籍交易審核管理 -->
+        <div class="card">
+            <h3>📦 書籍交易審核管理</h3>
+            <p>全站書籍上架狀態監控、內容審核與違規強制下架。</p>
+            <a href="#books" class="btn" onclick="alert('進入後台：全站書籍監控與下架管理')">審核書籍</a>
+        </div>
+
+        <!-- 3. 許願與通知服務控制 -->
+        <div class="card">
+            <h3>🔔 許願與通知服務控制</h3>
+            <p>監控許願單觸發系統搜尋引擎與配對通知之發送。</p>
+            <a href="#wish" class="btn" onclick="alert('進入後台：許願通知控制中心')">控制服務</a>
+        </div>
+
+        <!-- 4. 邊緣邏輯運算 -->
+        <div class="card">
+            <h3>⚡ 邊緣邏輯運算 (Edge)</h3>
+            <p>Cloudflare Workers 路由器與 API 請求處理器維護。</p>
+            <a href="#edge" class="btn" onclick="alert('進入後台：Workers 路由設定檢視')">檢視路由</a>
+        </div>
+    </div>
+
+    <!-- 5. 資料庫維護區塊展示 -->
+    <div class="table-preview">
+        <h3>🗄️ 資料庫維護 (D1 資料庫即時檢視)</h3>
+        <p style="font-size: 0.85rem; color: #718096;">此處對應我們建立的 5 大核心資料表架構（`books`, `wishlists`, `messages`, `reports`, `ratings`）。</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>資料表名稱 (Table)</th>
+                    <th>主要欄位結構</th>
+                    <th>目前狀態</th>
+                    <th>動作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>books</strong></td>
+                    <td>id, book_title, department, price, status</td>
+                    <td>正常 (Active)</td>
+                    <td><button onclick="alert('檢視 books 資料表內容')" style="padding: 3px 8px;">查看資料</button></td>
+                </tr>
+                <tr>
+                    <td><strong>wishlists</strong></td>
+                    <td>id, book_title, department, user_contact</td>
+                    <td>正常 (Active)</td>
+                    <td><button onclick="alert('檢視 wishlists 資料表內容')" style="padding: 3px 8px;">查看資料</button></td>
+                </tr>
+                <tr>
+                    <td><strong>reports</strong></td>
+                    <td>id, target_id, reason, reporter_name</td>
+                    <td>無違規回報</td>
+                    <td><button onclick="alert('檢視 reports 資料表內容')" style="padding: 3px 8px;">查看資料</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
